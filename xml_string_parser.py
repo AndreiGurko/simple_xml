@@ -16,9 +16,10 @@ class XmlStringParser:
         open_tag_complete = False
         for index, symbol in enumerate(data, 0):
             if symbol == BEGIN_TAG:
-                if data[index+1] == '/':
-                    open_tag_complete = False
+                #if data[index+1] == '/':
+                 #   open_tag_complete = False
                 if open_tag_complete:
+                    tag_data.strip()
                     tag_list.append(tag_data)
                     tag_data = ''
                     open_tag_complete = False
@@ -30,6 +31,8 @@ class XmlStringParser:
                 continue
             elif symbol not in ["\n", "\r"]:
                 tag_data += symbol
+        if tag_data.startswith('<') and tag_data.endswith('>'):
+            tag_list.append(tag_data)
         print(tag_list)
 
 test = """<note>
@@ -285,7 +288,24 @@ test3 = """
 </CD>
 </CATALOG>
 """
+test4 = """
+<messages>
+<note id="p501">
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+  <test id=55 temp=44/>
+</note>
 
-XmlStringParser().parse(test3)
+<note id="p502">
+  <to>Jani</to>
+  <from>Tove</from>
+  <heading>Re: Reminder</heading>
+  <body>I will not!</body>
+</note>
+</messages>"""
+
+XmlStringParser().parse(test4)
 
 

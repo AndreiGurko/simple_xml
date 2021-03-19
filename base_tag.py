@@ -4,6 +4,7 @@ from typing import Optional, List
 class BaseTag:
     def __init__(self, name: str = 'tag', attrs: list = None, nested_tags: list = None):
         self._name = name
+        self._root = False
         self._attrs = attrs if attrs else []
         self._nested_tags = nested_tags if nested_tags else []
 
