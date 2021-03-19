@@ -6,6 +6,7 @@ ROOT_UPPER_TAG_END = "?>"
 BEGIN_TAG = "<"
 END_TAG = ">"
 
+
 class XmlStringParser:
     def parse(self, data):
         if not data:
