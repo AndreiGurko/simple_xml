@@ -33,7 +33,6 @@ class XmlStringBuilder:
                 parent_tag.add_new_nested_tag(BaseTag(name=tag_name, content=tag_content))
 
 
-
 class Stack:
     def __init__(self):
         self._storage = []
