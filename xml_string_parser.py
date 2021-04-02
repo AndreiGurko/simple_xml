@@ -1,11 +1,5 @@
 from base_tag import *
-
-
-ROOT_UPPER_TAG_BEGIN = "<?"
-ROOT_UPPER_TAG_END = "?>"
-BEGIN_TAG = "<"
-END_TAG = ">"
-
+from xml_string_builder import XmlStringBuilder
 
 class XmlStringParser:
     def parse(self, data):
@@ -34,9 +28,12 @@ class XmlStringParser:
         if tag_data.startswith('<') and tag_data.endswith('>'):
             tag_list.append(tag_data)
         print(tag_list)
+        return tag_list
 
 test = """<note>
+<test>
 <to>Вася</to>
+</test>
 <from>Света</from>
 <heading>Напоминание</heading>
 <body>Позвони мне завтра!</body>
@@ -306,6 +303,6 @@ test4 = """
 </note>
 </messages>"""
 
-XmlStringParser().parse(test4)
+t = XmlStringParser().parse(test)
 
-
+z = XmlStringBuilder().build_tags(t)
