@@ -1,12 +1,21 @@
 from typing import Optional, List
 
+ROOT_UPPER_TAG_BEGIN = "<?"
+ROOT_UPPER_TAG_END = "?>"
+BEGIN_TAG = "<"
+END_TAG = ">"
+END_CLOSED_TAG = "/>"
+BEGIN_CLOSED_TAG = "</"
+
 
 class BaseTag:
-    def __init__(self, name: str = 'tag', attrs: list = None, nested_tags: list = None):
+    def __init__(self, name: str = 'tag', attrs: list = None, content='', nested_tags: list = None):
         self._name = name
         self._root = False
         self._attrs = attrs if attrs else []
+        self._content = ''
         self._nested_tags = nested_tags if nested_tags else []
+        self._root_upper_string = []
 
     def change_name(self, new_name: str):
         self._name = new_name
@@ -32,6 +41,19 @@ class BaseTag:
                 break
         if index:
             del self._attrs[index]
+
+    def set_content(self, new_content):
+        self._content = new_content
+
+    def get_content(self):
+        return self._content
+
+    def add_new_nested_tag(self, nested_tag):
+        # TODO: think about order tags
+        self._nested_tags.append(nested_tag)
+
+    def add_root_upper_string(self, upper_strings):
+        self._root_upper_string.extend(upper_strings)
 
 
 class TagAttribute:
