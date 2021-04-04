@@ -32,9 +32,9 @@ class XmlStringParser:
 
 test = """<note>
 <test>
-<to>Вася</to>
+<to id=5>Вася</to>
 </test>
-<from>Света</from>
+<from address='Yaroslavl" city and street' temp=47.7>Света</from>
 <heading>Напоминание</heading>
 <body>Позвони мне завтра!</body>
 </note>"""
