@@ -22,19 +22,18 @@ class XmlStringBuilder:
                 # extract tag name
                 tag_name = tag_data.split('>')[0][1:].split(' ')[0]
                 tag_content = tag_data.split('>')[1]
-                # TODO: create Attr instance
-                tag_attrs = self._extract_tag_atts(tag_data)
-                tags_storage.push(BaseTag(name=tag_name, content=tag_content))
+                tag_attrs = self._build_tag_attrs(tag_data)
+                tags_storage.push(BaseTag(name=tag_name, content=tag_content, attrs=tag_attrs))
             elif tag_data.startswith(BEGIN_TAG) and tag_data.endswith(END_CLOSED_TAG):
                 # extract tag name
                 tag_name = tag_data.split('>')[0][1:].split(' ')[0]
                 tag_content = tag_data.split('>')[1]
-                tag_attrs = self._extract_tag_atts(tag_data)
-                # TODO: create Attr instance
+                tag_attrs = self._build_tag_attrs(tag_data)
                 parent_tag = tags_storage.get_peak()
-                parent_tag.add_new_nested_tag(BaseTag(name=tag_name, content=tag_content))
+                parent_tag.add_new_nested_tag(BaseTag(name=tag_name, content=tag_content, attrs=tag_attrs))
 
-    def _extract_tag_atts(self, tag_data):
+    def _extract_tag_attrs(self, tag_data):
+        #TODO: need fix bugs
         attrs = []
         start_attr = False
         check_attr_value = False
@@ -82,6 +81,31 @@ class XmlStringBuilder:
                 attr += item
         return attrs
 
+    def _build_tag_attrs(self, tag_data):
+        tag_attrs = []
+        extracted_tag_attrs = self._extract_tag_attrs(tag_data)
+        for tag_attr in extracted_tag_attrs:
+            attr_name, attr_value = self._split_tag_attr_by_name_and_value(tag_attr)
+            tag_attr_object = self._create_tag_attr_obj(attr_name, attr_value)
+            if tag_attr_object:
+                tag_attrs.append(tag_attr_object)
+        return tag_attrs
+
+    def _split_tag_attr_by_name_and_value(self, tag_attr):
+        attr_name, attr_value = '', ''
+        if tag_attr:
+            try:
+                attr_name, attr_value = tag_attr.split('=')
+            except Exception:
+                pass
+        return attr_name, attr_value
+
+    def _create_tag_attr_obj(self, attr_name, attr_value):
+        tag_attr_obj = None
+        # TODO: should attr_value be with value all time?
+        if attr_name:
+            tag_attr_obj = TagAttribute(name=attr_name, value=attr_value)
+        return tag_attr_obj
 
 
 class Stack:
