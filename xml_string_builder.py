@@ -39,6 +39,8 @@ class XmlStringBuilder:
         check_attr_value = False
         attr_value_string = False
         attr_value_number = False
+        # if attr value is string we should check type of quote. e.g: 'Yaroslavl' and "Yaroslavl'"
+        quote_mark = None
         attr = ''
         for item in tag_data:
             if item == ">":
@@ -55,18 +57,23 @@ class XmlStringBuilder:
                     attr = ''
                     attr_value_number = False
                     continue
-                if attr_value_string and item == "'" or item == "\"":
-                    attr += item
-                    attrs.append(attr)
-                    attr_value_string = False
-                    attr = ''
-                    start_attr = False
-                    continue
+                if attr_value_string and item == "'" or attr_value_string and item == "\"":
+                    if quote_mark == item:
+                        attr += item
+                        attrs.append(attr)
+                        attr_value_string = False
+                        attr = ''
+                        start_attr = False
+                        continue
+                    else:
+                        attr += item
+                        continue
 
                 if check_attr_value:
                     if item == "'" or item == "\"":
                         check_attr_value = False
                         attr_value_string = True
+                        quote_mark = item
                         attr += item
                         continue
                     elif not item.isalpha():
